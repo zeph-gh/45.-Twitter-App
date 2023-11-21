@@ -1,24 +1,25 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { Container, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import useLocalStorage from "use-local-storage";
 import ProfileSideBar from "../components/ProfileSidebar";
 import ProfileMidBody from "../components/ProfileMidBody";
-import ProfileRightSideBar from "../components/ProfileRightSidebar";
+// import ProfileRightSideBar from "../components/ProfileRightSidebar";
+import { getAuth } from "firebase/auth";
+import { AuthContext } from "../components/AuthProvider";
 
 export default function ProfilePage() {
-  const [authToken, setAuthToken] = useLocalStorage("authToken", "");
+  const auth = getAuth();
   const navigate = useNavigate();
+  const { currentUser } = useContext(AuthContext);
 
-  // check for authToken ommedialy upon component mount and whenever authToken changes
   useEffect(() => {
-    if (!authToken) {
-      navigate("/login"); // redirect to login if no token
+    if (!currentUser) {
+      navigate("/login");
     }
-  }, [authToken, navigate]);
+  }, [currentUser, navigate]);
 
   const handleLogout = () => {
-    setAuthToken(""); // clear token from localStorage
+    auth.signOut();
   };
 
   return (
@@ -27,7 +28,7 @@ export default function ProfilePage() {
         <Row>
           <ProfileSideBar handleLogout={handleLogout} />
           <ProfileMidBody />
-          <ProfileRightSideBar />
+          {/* <ProfileRightSideBar /> */}
         </Row>
       </Container>
     </>

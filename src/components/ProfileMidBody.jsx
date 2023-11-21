@@ -1,12 +1,12 @@
 import { Button, Col, Image, Nav, Row, Spinner } from "react-bootstrap";
 import ProfilePostCard from "./ProfilePostCard";
-import { useEffect } from "react";
-import { jwtDecode } from "jwt-decode";
+import { useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchPostsByUser,
-  usernameByUserId,
+  // usernameByUserId,
 } from "../features/posts/postsSlice";
+import { AuthContext } from "./AuthProvider";
 
 export default function ProfileMidBody() {
   const url =
@@ -20,20 +20,26 @@ export default function ProfileMidBody() {
   const posts = useSelector((state) => state.posts.posts); //state.posts.posts = PostSlice.name.initialState
   const loading = useSelector((state) => state.posts.loading); // loading UX
   const username = useSelector((state) => state.posts.username);
-  const comments = useSelector((state) => state.posts.comments);
+  // const comments = useSelector((state) => state.posts.comments);
+
+  const { currentUser } = useContext(AuthContext);
+  // useEffect(() => {
+  //   // get post by userId
+  //   if (currentUser) {
+  //     const userId = currentUser.uid;
+  //     // get post by userId
+  //     dispatch(fetchPostsByUser(userId));
+  //     // get username by userId
+  //     dispatch(usernameByUserId(userId));
+  //   }
+  // }, [dispatch, currentUser]);
 
   useEffect(() => {
-    // get post by userId
-    const token = localStorage.getItem("authToken");
-    if (token) {
-      const decodedToken = jwtDecode(token);
-      const userId = decodedToken.id;
-      // get post by userId
-      dispatch(fetchPostsByUser(userId));
-      // get username by userId
-      dispatch(usernameByUserId(userId));
+    // to avoid crash if uid === null
+    if (currentUser) {
+      dispatch(fetchPostsByUser(currentUser.uid));
     }
-  }, [dispatch]);
+  }, [dispatch, currentUser]);
 
   return (
     <Col sm={6} className="bg-light" style={{ border: "1px solid lightgrey" }}>
@@ -98,11 +104,12 @@ export default function ProfileMidBody() {
         posts.map((post) => (
           <ProfilePostCard
             key={post.id}
-            username={post.username}
-            content={post.content}
-            created_at={post.created_at}
-            postId={post.id}
-            comments={comments[post.id] || []}
+            post={post}
+            // username={post.username}
+            // content={post.content}
+            // created_at={post.created_at}
+            // postId={post.id}
+            // comments={comments[post.id] || []}
           />
         ))}
     </Col>
