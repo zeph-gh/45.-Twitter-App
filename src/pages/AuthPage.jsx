@@ -278,6 +278,7 @@ export default function AuthPage() {
                 ) : (
                   <>
                     <p>or</p>
+
                     <Button
                       className="rounded-pill me-3"
                       variant="outline-dark"
@@ -285,6 +286,7 @@ export default function AuthPage() {
                     >
                       <i className="bi bi-google"></i> Sign in with Google
                     </Button>
+
                     <Button
                       className="rounded-pill"
                       variant="outline-dark"
@@ -292,7 +294,13 @@ export default function AuthPage() {
                     >
                       <i className="bi bi-facebook"></i> Sign in with Facebook
                     </Button>
+
+                    <Button className="rounded-pill" variant="outline-dark">
+                      <i className="bi bi-apple"></i> Sign in with Apple
+                    </Button>
+
                     <p className="my-3">or</p>
+
                     <Form.Group className="mb-1" controlId="formBasicPhone">
                       <Form.Control
                         onChange={(e) => setPhoneNumber(e.target.value)}
@@ -302,6 +310,7 @@ export default function AuthPage() {
                       />
                       <p className={messagePhoneClassName}>{messagePhone}</p>
                     </Form.Group>
+
                     <Button
                       className="rounded-pill"
                       variant="outline-dark"
