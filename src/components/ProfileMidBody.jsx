@@ -2,10 +2,7 @@ import { Button, Col, Image, Nav, Row, Spinner } from "react-bootstrap";
 import ProfilePostCard from "./ProfilePostCard";
 import { useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchPostsByUser,
-  // usernameByUserId,
-} from "../features/posts/postsSlice";
+import { fetchPostsByUser } from "../features/posts/postsSlice";
 import { AuthContext } from "./AuthProvider";
 
 export default function ProfileMidBody() {
@@ -20,19 +17,8 @@ export default function ProfileMidBody() {
   const posts = useSelector((state) => state.posts.posts); //state.posts.posts = PostSlice.name.initialState
   const loading = useSelector((state) => state.posts.loading); // loading UX
   const username = useSelector((state) => state.posts.username);
-  // const comments = useSelector((state) => state.posts.comments);
 
   const { currentUser } = useContext(AuthContext);
-  // useEffect(() => {
-  //   // get post by userId
-  //   if (currentUser) {
-  //     const userId = currentUser.uid;
-  //     // get post by userId
-  //     dispatch(fetchPostsByUser(userId));
-  //     // get username by userId
-  //     dispatch(usernameByUserId(userId));
-  //   }
-  // }, [dispatch, currentUser]);
 
   useEffect(() => {
     // to avoid crash if uid === null
@@ -101,17 +87,7 @@ export default function ProfileMidBody() {
         <Spinner animation="border" className="ms-3 mt-3" variant="primary" /> // spinner effect when redux loading true
       )}
       {posts.length > 0 &&
-        posts.map((post) => (
-          <ProfilePostCard
-            key={post.id}
-            post={post}
-            // username={post.username}
-            // content={post.content}
-            // created_at={post.created_at}
-            // postId={post.id}
-            // comments={comments[post.id] || []}
-          />
-        ))}
+        posts.map((post) => <ProfilePostCard key={post.id} post={post} />)}
     </Col>
   );
 }

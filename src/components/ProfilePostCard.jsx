@@ -10,14 +10,7 @@ import { useContext } from "react";
 import { AuthContext } from "./AuthProvider";
 import UpdatePostModal from "./UpdatePostModal";
 
-export default function ProfilePostCard({
-  // username,
-  // content,
-  // postId,
-  // created_at,
-  // comments,
-  post,
-}) {
+export default function ProfilePostCard({ post }) {
   const [likes, setLikes] = useState(post.likes || []);
   const { content, id: postId, imageUrl } = post; //storage to imageUrl
   const dispatch = useDispatch();
@@ -55,84 +48,6 @@ export default function ProfilePostCard({
     setLikes(likes.filter((id) => id !== userId));
     dispatch(removeLikeFromPost({ userId, postId }));
   };
-
-  // const [likes, setLikes] = useState([]);
-  // const [views, setViews] = useState("");
-
-  // const [showComment, setShowComment] = useState(false);
-
-  // const [showCommentById, setShowCommentById] = useState(null);
-
-  // const handleClose = () => {
-  //   setShowCommentById(null);
-  //   setShowComment(false);
-  // };
-  // const handleComment = (postId) => {
-  //   setShowCommentById(postId);
-  //   setShowComment(true);
-  // };
-
-  // // Decoding to get the userId
-  // const token = localStorage.getItem("authToken");
-  // const decode = jwtDecode(token);
-  // const userId = decode.id;
-
-  // const formattedDate = new Date(created_at).toLocaleString("en-US", {
-  //   month: "short",
-  //   day: "numeric",
-  //   year: "numeric",
-  // });
-
-  // useEffect(() => {
-  //   //get like
-  //   fetch(`${BASE_URL}/likes/post/${postId}`)
-  //     .then((response) => response.json())
-  //     .then((data) => setLikes(data))
-  //     .catch((error) => console.error("Error:", error));
-
-  //   //get view
-  //   fetch(`${BASE_URL}/posts/${postId}`)
-  //     .then((response) => response.json())
-  //     .then((data) => setViews(data.views))
-  //     .catch((error) => console.error("Error:", error));
-  // }, [postId]);
-
-  // useEffect(() => {
-  //   // get username by userId
-  //   dispatch(fetchCommentsByPostId(postId));
-  // }, [dispatch, postId]);
-
-  // const isLiked = likes.some((like) => like.user_id === userId);
-
-  // const handleLike = () => (isLiked ? removeFromLikes() : addToLikes());
-
-  // const addToLikes = () => {
-  //   axios
-  //     .post(`${BASE_URL}/likes`, {
-  //       user_id: userId,
-  //       post_id: postId,
-  //     })
-  //     .then((response) => {
-  //       setLikes([...likes, { ...response.data, likes_id: response.data.id }]);
-  //     })
-  //     .catch((error) => console.error("Error:", error));
-  // };
-
-  // const removeFromLikes = () => {
-  //   const like = likes.find((like) => like.user_id === userId);
-  //   if (like) {
-  //     axios
-  //       .put(`${BASE_URL}/likes/${userId}/${postId}`)
-  //       .then(() => {
-  //         setLikes(likes.filter((likeItem) => likeItem.user_id !== userId));
-  //       })
-  //       .catch((error) => console.error("Error:", error));
-  //   }
-  // };
-
-  // const handleDeletePost = () => {
-  //   dispatch(deletePost(postId));
-  // };
 
   return (
     <>
@@ -190,15 +105,6 @@ export default function ProfilePostCard({
               originalPostContent={content}
             />
           </div>
-          {/* <CommentPostModal
-            show={showComment && showCommentById === postId}
-            handleClose={handleClose}
-            postId={postId}
-            content={content}
-            username={username}
-            created_at={created_at}
-            comments={comments}
-          /> */}
         </Col>
         <Col sm={1}>
           <Button
