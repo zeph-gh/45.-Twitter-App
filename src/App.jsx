@@ -1,22 +1,36 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import AuthPage from "./pages/AuthPage";
-import ProfilePage from "./pages/ProfilePage";
-import { Provider } from "react-redux";
-import store from "./store";
-import { AuthProvider } from "./components/AuthProvider";
+import { Provider } from 'react-redux'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { AuthProvider } from './components/AuthProvider'
+import RequireAuth from './components/RequireAuth'
+import AuthPage from './pages/AuthPage'
+import ProfilePage from './pages/ProfilePage'
+import store from './store'
+
+function AppRoutes() {
+  return (
+    <Routes>
+      <Route
+        path="/profile"
+        element={
+          <RequireAuth>
+            <ProfilePage />
+          </RequireAuth>
+        }
+      />
+      <Route path="/login" element={<AuthPage />} />
+      <Route path="*" element={<AuthPage />} />
+    </Routes>
+  )
+}
 
 export default function App() {
   return (
     <AuthProvider>
       <Provider store={store}>
         <BrowserRouter>
-          <Routes>
-            <Route path="/profile" element={<ProfilePage />}></Route>
-            <Route path="/login" element={<AuthPage />}></Route>
-            <Route path="*" element={<AuthPage />}></Route>
-          </Routes>
+          <AppRoutes />
         </BrowserRouter>
       </Provider>
     </AuthProvider>
-  );
+  )
 }
